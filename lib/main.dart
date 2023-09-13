@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:train_demo_flutter/utils/hi_logger.dart';
 
 void main() {
   runApp(const MyApp());
@@ -48,6 +49,6 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void getContacts() {
-
+    HiLogger.log(message: "获取通讯录");
   }
 }
