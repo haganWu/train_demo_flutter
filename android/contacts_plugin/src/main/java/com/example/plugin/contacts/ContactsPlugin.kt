@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import android.util.Log
 import com.example.plugin.contacts.utils.ContactsPhoneUtils
+import com.google.gson.Gson
 import com.yanzhenjie.permission.Action
 import com.yanzhenjie.permission.AndPermission
 import io.flutter.plugin.common.BinaryMessenger
@@ -49,7 +50,9 @@ open class ContactsPlugin(private val activity: Activity) : MethodChannel.Method
 
     private fun loadContact(result: MethodChannel.Result) {
         val contactsList = ContactsPhoneUtils.getContactsList(activity)
-        result.success(contactsList)
+        val gson = Gson()
+        val jsonArray = gson.toJson(contactsList)
+        result.success(jsonArray)
     }
 
 

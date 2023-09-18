@@ -51,6 +51,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'com.yanzhenjie:permission:2.0.2'
+    implementation 'com.google.code.gson:gson:2.8.8'
     //fix Failed to apply plugin class 'FlutterPlugin'
     compileOnly files("$flutterRoot/bin/cache/artifacts/engine/android-arm/flutter.jar")
 }
