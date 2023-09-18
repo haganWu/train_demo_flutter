@@ -1,4 +1,4 @@
-package com.example.train
+package com.example.train_demo_flutter
 
 import com.example.plugin.contacts.ContactsPlugin
 import io.flutter.embedding.android.FlutterActivity

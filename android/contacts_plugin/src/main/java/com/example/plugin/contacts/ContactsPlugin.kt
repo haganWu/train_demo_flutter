@@ -1,12 +1,19 @@
 package com.example.plugin.contacts
 
+import android.Manifest
 import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import com.example.plugin.contacts.utils.ContactsPhoneUtils
+import com.yanzhenjie.permission.Action
+import com.yanzhenjie.permission.AndPermission
 import io.flutter.plugin.common.BinaryMessenger
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 
-open class ContactsPlugin(val activity: Activity) : MethodChannel.MethodCallHandler {
+
+open class ContactsPlugin(private val activity: Activity) : MethodChannel.MethodCallHandler {
 
     private val tag = "ContactsPlugin"
 
@@ -21,12 +28,48 @@ open class ContactsPlugin(val activity: Activity) : MethodChannel.MethodCallHand
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         if (call.method == "getContacts") {
             getContactsByNative(result)
-            Log.e(tag,"Dart端调用Native方法，Native端onMethodCall触发")
+            Log.e(tag, "Dart端调用Native方法，Native端onMethodCall触发")
         }
     }
 
-    private fun getContactsByNative( result: MethodChannel.Result) {
+    private fun getContactsByNative(result: MethodChannel.Result) {
 
-        result.success("返回给Dart联系人数据")
+        val permissions = arrayOf(
+            Manifest.permission.CALL_PHONE,
+            Manifest.permission.READ_CONTACTS,
+        )
+        if (checkPermission(permissions)) {
+            loadContact(result)
+        } else {
+            requestPermission(permissions) {
+                loadContact(result)
+            }
+        }
+    }
+
+    private fun loadContact(result: MethodChannel.Result) {
+        val contactsList = ContactsPhoneUtils.getContactsList(activity)
+        result.success(contactsList)
+    }
+
+
+    private fun checkPermission(permissions: Array<String>): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            permissions.forEach {
+                if (activity.checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
+
+    private fun requestPermission(permission: Array<String>, granted: () -> Unit) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            AndPermission.with(activity).runtime().permission(permission)
+                .onGranted(Action { granted() }).start()
+        }
+
     }
 }
