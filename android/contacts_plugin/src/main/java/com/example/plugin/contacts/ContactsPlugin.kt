@@ -29,8 +29,15 @@ open class ContactsPlugin(private val activity: Activity) : MethodChannel.Method
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         if (call.method == "getContacts") {
             getContactsByNative(result)
-            Log.e(tag, "Dart端调用Native方法，Native端onMethodCall触发")
+            Log.e(tag, "Dart端调用Native方法，Native端onMethodCall触发getContacts")
+        } else if (call.method == "callTelephone") {
+            callTelephone(call.arguments as String)
+            Log.e(tag, "Dart端调用Native方法，Native端onMethodCall触发callTelephone")
         }
+    }
+
+    private fun callTelephone(phoneNumber: String) {
+        ContactsPhoneUtils.callTelephone(activity, phoneNumber)
     }
 
     private fun getContactsByNative(result: MethodChannel.Result) {

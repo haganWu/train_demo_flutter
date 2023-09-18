@@ -1,6 +1,5 @@
 import 'package:flutter/services.dart';
 
-
 /// @author WuHaiheng
 /// @date 2023-09-13 15:52
 /// @description 原生通讯插件
@@ -9,5 +8,9 @@ class ContactsPluginManager {
 
   static Future<String> getContacts() async {
     return await _channel.invokeMethod("getContacts");
+  }
+
+  static Future<int> callTelephone(String phoneNumber) async {
+    return await _channel.invokeMethod("callTelephone", phoneNumber);
   }
 }

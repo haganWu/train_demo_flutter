@@ -68,10 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void getContacts() {
     HiLogger.log(message: "获取通讯录");
     ContactsPluginManager.getContacts().then((result) {
-      setState(() {
-        contactList.clear();
-      });
-
       HiLogger.log(message: "获取原生通讯录返回结果:$result");
       List<dynamic> jsonList = json.decode(result);
       List<ContactModel> listTemp = [];
@@ -81,6 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
         listTemp.add(contact);
       }
       setState(() {
+        contactList.clear();
         contactList.addAll(listTemp);
       });
       HiLogger.log(message: "原生通讯录数据转成成Dart BeanList:$contactList");
@@ -89,5 +86,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _callTelephone(String phoneNumber) {
     HiLogger.log(message: "拨打电话：$phoneNumber");
+    ContactsPluginManager.callTelephone(phoneNumber);
   }
 }
