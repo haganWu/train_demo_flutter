@@ -57,7 +57,10 @@ public class ContactsPlugin: NSObject, FlutterPlugin{
     }
     
     func callTelephone(phoneNumber: String) {
-        print("Dart端调用Native-IOS方法，Native端onMethodCall触发callTelephone")
+        print("Dart端调用Native-IOS方法，Native端onMethodCall触发callTelephone,手机号码：\(phoneNumber)")
+        if let phoneURL = URL(string: "tel://\(phoneNumber)") {
+            UIApplication.shared.open(phoneURL, options: [:], completionHandler: nil)
+        }
         
     }
 
