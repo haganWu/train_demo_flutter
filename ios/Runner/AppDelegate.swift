@@ -7,7 +7,9 @@ import Flutter
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
-    GeneratedPluginRegistrant.register(with: self)
+      GeneratedPluginRegistrant.register(with: self)
+      let registart = registrar(forPlugin: "ContactsPlugin")!
+      ContactsPlugin.register(with: registart)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
